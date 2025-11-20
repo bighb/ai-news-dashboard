@@ -51,9 +51,9 @@ export const SOURCE_CONFIG: Record<NewsSource, { label: string; color: string }>
 
 // 分类配置
 export const CATEGORY_CONFIG: Record<NewsCategory, { label: string; color: string }> = {
-  model: { label: "New Model", color: "bg-purple-500" },
-  application: { label: "Application", color: "bg-blue-500" },
-  tutorial: { label: "Tutorial", color: "bg-green-500" },
-  tool: { label: "Tool", color: "bg-yellow-500" },
-  research: { label: "Research", color: "bg-pink-500" },
+  model: { label: "新模型", color: "bg-green-500" },
+  application: { label: "行业应用", color: "bg-blue-500" },
+  tutorial: { label: "教程", color: "bg-purple-500" },
+  tool: { label: "工具", color: "bg-yellow-500" },
+  research: { label: "研究", color: "bg-pink-500" },
 };
