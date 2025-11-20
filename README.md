@@ -1,36 +1,303 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI 资讯聚合平台
 
-## Getting Started
+一个现代化的 AI 资讯聚合平台，实时汇聚来自 Reddit、Hacker News 和 arXiv 的最新 AI 相关资讯和论文。
 
-First, run the development server:
+## 📋 项目简介
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+AI News Dashboard 是一个基于 Next.js 构建的全栈 Web 应用，旨在为 AI 从业者和爱好者提供一站式的资讯获取平台。通过聚合多个优质来源的内容，用户可以快速浏览最新的 AI 模型、应用、教程、工具和研究论文。
+
+### 核心特点
+
+- 🚀 **实时聚合**：自动从多个平台获取最新 AI 资讯
+- 🎯 **智能分类**：自动将内容分类为模型、应用、教程、工具、研究五大类别
+- 🔍 **灵活筛选**：支持按来源、分类、时间和热度多维度筛选
+- 📱 **响应式设计**：完美适配桌面和移动设备
+- ⚡ **性能优化**：采用数据缓存和并行请求，提供极速体验
+
+## 🎨 产品功能
+
+### 1. 资讯聚合
+
+- **多源抓取**：同时从 Reddit、Hacker News 和 arXiv 获取内容
+- **并行处理**：使用 Promise.allSettled 并行获取数据，提高响应速度
+- **去重机制**：自动识别和去除重复内容
+- **智能排序**：支持按发布时间和热度排序
+
+### 2. 内容分类
+
+- **模型 (Model)**：新发布的 AI 模型和算法
+- **应用 (Application)**：AI 技术的实际应用案例
+- **教程 (Tutorial)**：学习资源和教程指南
+- **工具 (Tool)**：开发工具和实用库
+- **研究 (Research)**：学术论文和研究成果
+
+### 3. 数据来源
+
+- **Reddit**：来自 r/MachineLearning、r/artificial 等 AI 相关社区的热门帖子
+- **Hacker News**：科技创业社区的 AI 相关讨论
+- **arXiv**：最新的 AI 学术论文（cs.AI、cs.CL、cs.LG 分类）
+
+### 4. 交互功能
+
+- **实时筛选**：勾选/取消勾选来源和分类，即时更新内容
+- **排序切换**：在时间排序和热度排序之间快速切换
+- **详情查看**：点击卡片跳转到原始内容页面
+- **元数据展示**：显示点赞数、评论数、作者等详细信息
+
+## 🏗️ 项目架构
+
+### 目录结构
+
+```
+ai-news-dashboard/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/               # API 路由
+│   │   │   └── aggregate/     # 资讯聚合接口
+│   │   ├── layout.tsx         # 根布局
+│   │   ├── page.tsx           # 首页
+│   │   └── globals.css        # 全局样式
+│   ├── components/            # React 组件
+│   │   ├── header.tsx         # 页面头部
+│   │   ├── filter-bar.tsx     # 筛选侧边栏
+│   │   ├── news-grid.tsx      # 资讯网格容器
+│   │   ├── news-card.tsx      # 资讯卡片
+│   │   ├── providers.tsx      # 全局 Provider
+│   │   └── ui/                # 基础 UI 组件
+│   ├── lib/                   # 工具函数和数据源
+│   │   ├── data-sources/      # 数据源适配器
+│   │   │   ├── reddit.ts      # Reddit API 适配
+│   │   │   ├── hackernews.ts  # HN API 适配
+│   │   │   └── arxiv.ts       # arXiv API 适配
+│   │   ├── proxy-fetch.ts     # 代理请求工具
+│   │   └── utils.ts           # 工具函数
+│   ├── stores/                # 状态管理
+│   │   └── filter-store.ts    # 筛选状态
+│   └── types/                 # TypeScript 类型定义
+│       └── index.ts
+├── public/                    # 静态资源
+├── package.json              # 项目依赖
+└── README.md                 # 项目文档
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 架构设计
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### 1. 前端架构
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **UI 层**：基于 React 19 和 Tailwind CSS 构建的组件化界面
+- **状态管理**：使用 Zustand 管理筛选状态
+- **数据获取**：采用 TanStack Query (React Query) 处理异步数据
+- **样式方案**：Tailwind CSS + Radix UI 组件库
 
-## Learn More
+#### 2. 后端架构
 
-To learn more about Next.js, take a look at the following resources:
+- **API 设计**：基于 Next.js App Router 的 RESTful API
+- **数据聚合**：并行请求多个数据源，统一数据格式
+- **缓存策略**：ISR (Incremental Static Regeneration)，1 小时缓存
+- **错误处理**：优雅降级，部分失败不影响整体服务
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### 3. 数据流
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+用户请求 → Next.js Page → React Query
+    ↓
+API Route (/api/aggregate)
+    ↓
+并行请求三个数据源
+    ├── Reddit API
+    ├── Hacker News API
+    └── arXiv API
+    ↓
+数据标准化 → 去重 → 排序
+    ↓
+返回统一格式的 NewsItem[]
+    ↓
+前端筛选和展示
+```
 
-## Deploy on Vercel
+## 🛠️ 技术栈
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 核心框架
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **[Next.js 16](https://nextjs.org/)** - React 全栈框架，使用 App Router
+- **[React 19](https://react.dev/)** - 用户界面构建库
+- **[TypeScript 5](https://www.typescriptlang.org/)** - 类型安全的 JavaScript 超集
+
+### 状态管理与数据获取
+
+- **[Zustand 5](https://zustand-demo.pmnd.rs/)** - 轻量级状态管理库
+- **[TanStack Query 5](https://tanstack.com/query/)** - 强大的异步状态管理
+- **[date-fns 4](https://date-fns.org/)** - 现代化的日期处理库
+
+### UI 组件库
+
+- **[Radix UI](https://www.radix-ui.com/)** - 无样式、可访问的 UI 组件
+  - `@radix-ui/react-select` - 下拉选择器
+  - `@radix-ui/react-separator` - 分隔线
+  - `@radix-ui/react-slot` - 组件插槽
+- **[Lucide React](https://lucide.dev/)** - 美观的图标库
+- **[Tailwind CSS 4](https://tailwindcss.com/)** - 实用优先的 CSS 框架
+
+### 数据处理
+
+- **[fast-xml-parser](https://github.com/NaturalIntelligence/fast-xml-parser)** - 高性能 XML 解析器（用于 arXiv RSS）
+- **[undici](https://undici.nodejs.org/)** - 高性能 HTTP 客户端
+- **[global-agent](https://github.com/gajus/global-agent)** - 全局代理配置
+
+### 开发工具
+
+- **[ESLint 9](https://eslint.org/)** - 代码质量检查
+- **[PostCSS](https://postcss.org/)** - CSS 转换工具
+- **[pnpm](https://pnpm.io/)** - 快速、节省磁盘空间的包管理器
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js 20+
+- pnpm 8+ (推荐) 或 npm/yarn
+
+### 安装依赖
+
+```bash
+pnpm install
+```
+
+### 启动开发服务器
+
+```bash
+pnpm dev
+```
+
+打开浏览器访问 [http://localhost:3000](http://localhost:3000) 查看应用。
+
+### 构建生产版本
+
+```bash
+pnpm build
+```
+
+### 启动生产服务器
+
+```bash
+pnpm start
+```
+
+## 📝 API 接口
+
+### GET /api/aggregate
+
+聚合所有来源的 AI 资讯。
+
+**响应格式：**
+
+```typescript
+{
+  items: NewsItem[],        // 资讯列表
+  fetchedAt: string,        // 获取时间 (ISO 8601)
+  errors?: string[]         // 错误信息（如果有）
+}
+```
+
+**NewsItem 结构：**
+
+```typescript
+{
+  id: string,               // 唯一标识
+  title: string,            // 标题
+  summary?: string,         // 摘要
+  url: string,              // 原文链接
+  source: "reddit" | "hn" | "arxiv",
+  sourceName: string,       // 来源名称
+  category: "model" | "application" | "tutorial" | "tool" | "research",
+  publishedAt: string,      // 发布时间
+  popularity: number,       // 热度分数
+  metadata: {
+    likes?: number,         // 点赞数
+    comments?: number,      // 评论数
+    upvotes?: number,       // 赞成票
+    author?: string,        // 作者
+    subreddit?: string      // 子版块
+  }
+}
+```
+
+**缓存策略：**
+
+- ISR 缓存：1 小时 (3600 秒)
+- 缓存过期后自动重新验证
+
+## 🔧 配置说明
+
+### 代理配置
+
+如果需要通过代理访问外部 API，可以设置环境变量：
+
+```bash
+# .env.local
+GLOBAL_AGENT_HTTP_PROXY=http://your-proxy:port
+```
+
+### 数据源配置
+
+在 `src/lib/data-sources/` 目录下可以调整各个数据源的配置：
+
+- **Reddit**：修改订阅的 subreddit 列表
+- **Hacker News**：调整获取的故事数量
+- **arXiv**：修改关注的论文分类
+
+## 📦 部署
+
+### Vercel (推荐)
+
+本项目最适合部署到 [Vercel 平台](https://vercel.com/)：
+
+1. 将代码推送到 GitHub
+2. 在 Vercel 中导入项目
+3. 自动部署完成
+
+### Docker 部署
+
+```bash
+# 构建镜像
+docker build -t ai-news-dashboard .
+
+# 运行容器
+docker run -p 3000:3000 ai-news-dashboard
+```
+
+### 传统服务器
+
+```bash
+pnpm build
+pnpm start
+```
+
+使用 PM2 或其他进程管理器保持应用运行。
+
+## 🤝 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+### 开发流程
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
+
+## 📄 许可证
+
+本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
+
+## 🙏 致谢
+
+- [Next.js](https://nextjs.org/) - 出色的 React 框架
+- [Vercel](https://vercel.com/) - 优秀的部署平台
+- [Radix UI](https://www.radix-ui.com/) - 高质量的 UI 组件
+- 所有开源贡献者
+
+---
+
+**Made with ❤️ for the AI community**
