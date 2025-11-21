@@ -3,19 +3,19 @@
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
+    "skipLibCheck": true, // 跳过库文件的类型检查
+    "strict": true, // 开启所有严格类型检查选项
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "incremental": true,
+    "moduleResolution": "bundler", // 使用 bundler 模块解析策略
+    "resolveJsonModule": true, // 允许导入 JSON 模块
+    "isolatedModules": true, // 每个文件作为单独的模块进行编译
+    "jsx": "react-jsx", // 使用新的 JSX 转换
+    "incremental": true, // 启用增量编译以提高后续编译速度
     "plugins": [
       {
-        "name": "next"
+        "name": "next" // 使用 Next.js 的 TypeScript 插件
       }
     ],
     "paths": {
