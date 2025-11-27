@@ -57,7 +57,7 @@ export const revalidate = 3600;
 export async function GET() {
   const errors: string[] = [];
 
-  // Fetch from all sources in parallel
+  // 获取所有数据源的内容
   const [redditPosts, hnStories, arxivPapers] = await Promise.allSettled([
     fetchRedditPosts(),
     fetchHNStories(),
@@ -66,28 +66,28 @@ export async function GET() {
 
   const items: NewsItem[] = [];
 
-  // Process Reddit results
+  // 处理 Reddit 结果
   if (redditPosts.status === "fulfilled") {
     items.push(...redditPosts.value);
   } else {
     errors.push(`Reddit: ${redditPosts.reason}`);
   }
 
-  // Process HN results
+  // 处理 Hacker News 结果
   if (hnStories.status === "fulfilled") {
     items.push(...hnStories.value);
   } else {
     errors.push(`Hacker News: ${hnStories.reason}`);
   }
 
-  // Process arXiv results
+  // 处理 arXiv 结果
   if (arxivPapers.status === "fulfilled") {
     items.push(...arxivPapers.value);
   } else {
     errors.push(`arXiv: ${arxivPapers.reason}`);
   }
 
-  // Deduplicate items by ID, keeping the one with highest popularity
+  // 根据 ID 去重，保留最高热度的项目
   const itemsMap = new Map<string, NewsItem>();
   for (const item of items) {
     const existing = itemsMap.get(item.id);
@@ -98,7 +98,7 @@ export async function GET() {
 
   const deduplicatedItems = Array.from(itemsMap.values());
 
-  // Sort by published date (newest first)
+  // 根据发布时间排序（最新的在前）
   deduplicatedItems.sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
